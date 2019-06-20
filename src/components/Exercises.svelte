@@ -10,7 +10,7 @@
       ExercisesStore.addExercise(input)
       input = ''
     } else {
-      Logger.warn('components -> Main', 'input cannot be empty')
+      Logger.warn('components -> Exercises', 'input cannot be empty')
     }
   }
 </script>

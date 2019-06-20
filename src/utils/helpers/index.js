@@ -1,3 +1,13 @@
-import { cloneObject, generateRandomId } from './helpers'
+import {
+  cloneObject,
+  generateRandomId,
+  getArrayItemIndexById,
+  getArrayItemById
+} from './helpers'
 
-export { cloneObject, generateRandomId }
+export {
+  cloneObject,
+  generateRandomId,
+  getArrayItemIndexById,
+  getArrayItemById
+}

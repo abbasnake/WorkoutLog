@@ -7,4 +7,25 @@ const generateRandomId = () => {
   return id
 }
 
-export { cloneObject, generateRandomId }
+const getArrayItemIndexById = (id, object) => {
+  const clone = cloneObject(object)
+  const index = clone.findIndex(item => item.id === id)
+
+  if (index === -1) return false
+
+  return index
+}
+
+const getArrayItemById = (id, object) => {
+  const clone = cloneObject(object)
+  const correctItem = clone.find(item => item.id === id)
+
+  return correctItem ? correctItem : false
+}
+
+export {
+  cloneObject,
+  generateRandomId,
+  getArrayItemIndexById,
+  getArrayItemById
+}
