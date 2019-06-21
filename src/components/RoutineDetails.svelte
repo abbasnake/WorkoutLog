@@ -1,5 +1,5 @@
 <script>
-  import { NavigationStore, ExercisesStore, RoutinesStore } from '../store'
+  import { NavigationStore, ExercisesStore } from '../store'
   import { cloneObject } from '../utils/helpers'
   import Logger from '../utils/logger'
 
@@ -27,6 +27,10 @@
     <div>
        {exercise.index + 1} - {exercise.name} - {exercise.setsReps[0]}x{exercise.setsReps[1]}
 
+      <button
+        on:click={() => ExercisesStore.removeExerciseFromRoutine(routineId, exercise.id, exercise.index)}>
+        X
+      </button>
     </div>
   {/each}
   <select on:change={e => (selectValue = e.target.value)}>

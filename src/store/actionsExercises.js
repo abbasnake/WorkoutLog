@@ -1,15 +1,21 @@
-import {
-  cloneObject,
-  generateRandomId,
-  getArrayItemIndexById,
-  getArrayItemById
-} from '../utils/helpers'
+import { generateRandomId, getArrayItemById } from '../utils/helpers'
 import Storage from '../utils/storage'
 
 const actions = () => {
+  const _exerciseTemplate = name => ({
+    id: generateRandomId(),
+    name,
+    notes: ''
+  })
+
+  const _routineTemplate = name => ({
+    id: generateRandomId(),
+    name,
+    exercises: []
+  })
+
   const addExercise = (state, name) => {
-    const id = generateRandomId()
-    const exercises = state.exercises.concat({ id, name, notes: '' })
+    const exercises = state.exercises.concat(_exerciseTemplate(name))
 
     Storage.saveExercises(exercises)
 
@@ -17,10 +23,7 @@ const actions = () => {
   }
 
   const deleteExercise = (state, id) => {
-    const exercises = cloneObject(state.exercises)
-    const index = getArrayItemIndexById(id, exercises)
-
-    exercises.splice(index, 1)
+    const exercises = state.exercises.filter(exercise => exercise.id !== id)
 
     Storage.saveExercises(exercises)
 
@@ -28,10 +31,9 @@ const actions = () => {
   }
 
   const editExercise = (state, id, newData) => {
-    const exercises = cloneObject(state.exercises)
-    const index = getArrayItemIndexById(id, exercises)
-
-    exercises[index] = { ...exercises[index], ...newData }
+    const exercises = state.exercises.map(exercise =>
+      exercise.id === id ? { ...exercise, ...newData } : exercise
+    )
 
     Storage.saveExercises(exercises)
 
@@ -45,8 +47,7 @@ const actions = () => {
   }
 
   const addRoutine = (state, name) => {
-    const id = generateRandomId()
-    const routines = state.routines.concat({ id, name, exercises: [] })
+    const routines = state.routines.concat(_routineTemplate(name))
 
     Storage.saveRoutines(routines)
 
@@ -54,29 +55,50 @@ const actions = () => {
   }
 
   const addExerciseToRoutine = (state, routineId, exerciseId) => {
-    const routines = cloneObject(state.routines)
-    const exercises = cloneObject(state.exercises)
-    const currentRoutineIndex = getArrayItemIndexById(routineId, routines)
-    const currentExercise = getArrayItemById(exerciseId, exercises)
+    const routines = state.routines.map(routine => {
+      if (routine.id === routineId) {
+        const exercise = getArrayItemById(exerciseId, state.exercises)
+        const newExercise = {
+          ...exercise,
+          index: routine.exercises.length,
+          setsReps: [3, 8]
+        }
+        const exercises = [...routine.exercises, newExercise]
 
-    routines[currentRoutineIndex].exercises.push({
-      ...currentExercise,
-      index: routines[currentRoutineIndex].exercises.length,
-      setsReps: [3, 8]
+        return { ...routine, exercises }
+      }
+
+      return routine
     })
 
     Storage.saveRoutines(routines)
+    console.log('TCL: addExerciseToRoutine -> routines', routines);
 
     return { ...state, routines }
   }
 
-  const removeExerciseFromRoutine = (state, routineId, exerciseId) => {
-    const routines = cloneObject(state.routines)
-    const exercises = cloneObject(state.exercises)
-    const currentRoutineIndex = getArrayItemIndexById(routineId, routines)
-    const currentExerciseIndex = getArrayItemIndexById(exerciseId, exercises)
+  const removeExerciseFromRoutine = (
+    state,
+    routineId,
+    exerciseId,
+    exerciseIndex
+  ) => {
+    const routines = state.routines.map(routine => {
+      if (routine.id === routineId) {
+        const exercises = routine.exercises
+          .filter(
+            exercise =>
+              (exercise.id !== exerciseId && exercise.index !== exerciseIndex)
+          )
+          .map((exercise, index) => ({ ...exercise, index }))
 
-    routines[currentRoutineIndex].exercises.splice(currentExerciseIndex, 1)
+        console.log('exercises---', exercises, exerciseIndex)
+
+        return { ...routine, exercises }
+      }
+
+      return routine
+    })
 
     Storage.saveRoutines(routines)
 

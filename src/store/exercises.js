@@ -18,9 +18,14 @@ const exercisesStore = () => {
   const addRoutine = name => update(state => Actions.addRoutine(state, name))
   const addExerciseToRoutine = (routineId, exerciseId) =>
     update(state => Actions.addExerciseToRoutine(state, routineId, exerciseId))
-  const removeExerciseFromRoutine = (routineId, exerciseId) =>
+  const removeExerciseFromRoutine = (routineId, exerciseId, exerciseIndex) =>
     update(state =>
-      Actions.removeExerciseFromRoutine(state, routineId, exerciseId)
+      Actions.removeExerciseFromRoutine(
+        state,
+        routineId,
+        exerciseId,
+        exerciseIndex
+      )
     )
   const loadRoutines = () => update(state => Actions.loadRoutines(state))
 
