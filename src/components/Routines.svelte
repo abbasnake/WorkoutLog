@@ -1,5 +1,5 @@
 <script>
-  import { RoutinesStore, NavigationStore } from '../store'
+  import { ExercisesStore, NavigationStore } from '../store'
   import { ROUTINE_DETAILS_ROUTE } from '../utils/constants'
   import Logger from '../utils/logger.js'
 
@@ -7,7 +7,7 @@
 
   function onClick() {
     if (input.length > 0) {
-      RoutinesStore.addRoutine(input)
+      ExercisesStore.addRoutine(input)
       input = ''
     } else {
       Logger.warn('components -> Routines', 'input cannot be empty')
@@ -36,7 +36,7 @@
 
 <div class="Routines">
   <h1>Routines</h1>
-  {#each $RoutinesStore as routine (routine.id)}
+  {#each $ExercisesStore.routines as routine (routine.id)}
     <h4
       class="Routines-name"
       on:click={() => NavigationStore.navigateTo(ROUTINE_DETAILS_ROUTE, routine.id)}>

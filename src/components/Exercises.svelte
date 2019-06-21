@@ -33,7 +33,7 @@
 
 <div class="Exercises">
   <h1>exercises</h1>
-  {#each $ExercisesStore as exercise (exercise.id)}
+  {#each $ExercisesStore.exercises as exercise (exercise.id)}
     <Exercise {exercise} />
   {/each}
   <div class="Exercises-addNew">

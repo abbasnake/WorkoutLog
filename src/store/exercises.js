@@ -1,60 +1,39 @@
 import { writable } from 'svelte/store'
-import { cloneObject, generateRandomId } from '../utils/helpers'
-import Storage from '../utils/storage'
+import Actions from './actionsExercises'
 
-// probably need to add the routines and make the derived here as well
+const initialState = {
+  exercises: [],
+  routines: []
+}
+
 const exercisesStore = () => {
-  const { subscribe, update } = writable([])
+  const { subscribe, update } = writable(initialState)
 
-  const addExercise = name => {
-    update(exercises => {
-      const clone = cloneObject(exercises)
-      const id = generateRandomId()
-
-      clone.push({ id, name })
-
-      Storage.saveExercises(clone)
-
-      return clone
-    })
-  }
-
-  const deleteExercise = id => {
-    update(exercises => {
-      const clone = cloneObject(exercises)
-      const index = clone.findIndex(exercise => exercise.id === id)
-
-      clone.splice(index, 1)
-
-      Storage.saveExercises(clone)
-
-      return clone
-    })
-  }
-
-  const editExercise = (id, newData) => {
-    update(exercises => {
-      const clone = cloneObject(exercises)
-      const index = clone.findIndex(exercise => exercise.id === id)
-
-      clone[index] = { ...clone[index], ...newData }
-
-      Storage.saveExercises(clone)
-
-      return clone
-    })
-  }
-
-  const loadExercises = () => {
-    update(() => Storage.loadExercises())
-  }
+  const addExercise = name => update(state => Actions.addExercise(state, name))
+  const deleteExercise = id =>
+    update(state => Actions.deleteExercise(state, id))
+  const editExercise = (id, newData) =>
+    update(state => Actions.editExercise(state, id, newData))
+  const loadExercises = () => update(state => Actions.loadExercises(state))
+  const addRoutine = name => update(state => Actions.addRoutine(state, name))
+  const addExerciseToRoutine = (routineId, exerciseId) =>
+    update(state => Actions.addExerciseToRoutine(state, routineId, exerciseId))
+  const removeExerciseFromRoutine = (routineId, exerciseId) =>
+    update(state =>
+      Actions.removeExerciseFromRoutine(state, routineId, exerciseId)
+    )
+  const loadRoutines = () => update(state => Actions.loadRoutines(state))
 
   return {
     subscribe,
     addExercise,
     deleteExercise,
     editExercise,
-    loadExercises
+    loadExercises,
+    addRoutine,
+    addExerciseToRoutine,
+    removeExerciseFromRoutine,
+    loadRoutines
   }
 }
 
