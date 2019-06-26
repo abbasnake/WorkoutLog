@@ -1,23 +1,48 @@
 <script>
   import { NavigationStore, ExercisesStore } from '../store'
-  import { cloneObject } from '../utils/helpers'
+  import { ROUTINES_ROUTE } from '../utils/constants.js'
   import Logger from '../utils/logger'
 
-  let selectValue = ''
+  let exerciseId = ''
   const { data: routineId } = $NavigationStore
-  $: routine = cloneObject(
-    $ExercisesStore.routines.find(item => item.id === routineId)
-  )
+  $: routine = setupRoutine($ExercisesStore)
 
   function addExerciseToRoutine() {
-    if (selectValue) {
-      ExercisesStore.addExerciseToRoutine(routine.id, selectValue)
+    if (exerciseId) {
+      ExercisesStore.addExerciseToRoutine({ routineId, exerciseId })
     } else {
       Logger.warn(
         'components -> RoutineDetails',
         'an exercise has to be selected'
       )
     }
+  }
+
+  function removeExerciseFromRoutine(exerciseId, exerciseIndex) {
+    ExercisesStore.removeExerciseFromRoutine({
+      routineId,
+      exerciseId,
+      exerciseIndex
+    })
+  }
+
+  function deleteRoutine() {
+    NavigationStore.navigateTo(ROUTINES_ROUTE)
+    ExercisesStore.deleteRoutine({ routineId })
+  }
+
+  function setupRoutine(store) {
+    const currentRoutine = store.routines.find(item => item.id === routineId)
+
+    const exercises = currentRoutine.exercises.map(exercise => {
+      const exerciseDetails = store.exercises.find(
+        item => item.id === exercise.id
+      )
+
+      return { ...exercise, ...exerciseDetails }
+    })
+
+    return { ...currentRoutine, exercises }
   }
 </script>
 
@@ -28,16 +53,19 @@
        {exercise.index + 1} - {exercise.name} - {exercise.setsReps[0]}x{exercise.setsReps[1]}
 
       <button
-        on:click={() => ExercisesStore.removeExerciseFromRoutine(routineId, exercise.id, exercise.index)}>
+        on:click={() => removeExerciseFromRoutine(exercise.id, exercise.index)}>
         X
       </button>
     </div>
   {/each}
-  <select on:change={e => (selectValue = e.target.value)}>
+  <select on:change={e => (exerciseId = e.target.value)}>
     <option value="" disabled selected>Add exercise</option>
     {#each $ExercisesStore.exercises as exercise (exercise.id)}
       <option value={exercise.id}>{exercise.name}</option>
     {/each}
   </select>
   <button on:click={addExerciseToRoutine}>Add Exercise To Routine</button>
+  <br />
+  <br />
+  <button on:click={deleteRoutine}>Delete Routine</button>
 </div>

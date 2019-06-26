@@ -7,7 +7,7 @@
 
   function onClick() {
     if (input.length > 0) {
-      ExercisesStore.addRoutine(input)
+      ExercisesStore.addRoutine({ name: input })
       input = ''
     } else {
       Logger.warn('components -> Routines', 'input cannot be empty')
@@ -17,11 +17,22 @@
 
 <style lang="scss">
   .Routines {
-    &-name {
+    &-routine {
       height: 50px;
       border: 1px solid black;
-    }
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
 
+      h4 {
+        flex: 5;
+      }
+
+      button {
+        flex: 1;
+        height: 60%;
+      }
+    }
     &-addNew {
       margin: 10px 0;
       height: 40px;
@@ -37,11 +48,13 @@
 <div class="Routines">
   <h1>Routines</h1>
   {#each $ExercisesStore.routines as routine (routine.id)}
-    <h4
-      class="Routines-name"
-      on:click={() => NavigationStore.navigateTo(ROUTINE_DETAILS_ROUTE, routine.id)}>
-       {routine.name}
-    </h4>
+    <div class="Routines-routine">
+      <h4> {routine.name} </h4>
+      <button
+        on:click={() => NavigationStore.navigateTo(ROUTINE_DETAILS_ROUTE, routine.id)}>
+        >
+      </button>
+    </div>
   {/each}
   <div class="Routines-addNew">
     <input type="text" placeholder="Add new Routine..." bind:value={input} />

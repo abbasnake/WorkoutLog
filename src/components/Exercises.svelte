@@ -7,7 +7,7 @@
 
   function onClick() {
     if (input.length > 0) {
-      ExercisesStore.addExercise(input)
+      ExercisesStore.addExercise({ name: input })
       input = ''
     } else {
       Logger.warn('components -> Exercises', 'input cannot be empty')

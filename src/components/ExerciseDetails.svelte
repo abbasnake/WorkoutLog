@@ -9,7 +9,7 @@
 
   function editSaveExercise() {
     if (isEditMode) {
-      ExercisesStore.editExercise(id, { name, notes })
+      ExercisesStore.editExercise({ id, newData: { name, notes } })
     }
     isEditMode = !isEditMode
   }
@@ -18,7 +18,7 @@
   }
 
   function deleteExercise() {
-    ExercisesStore.deleteExercise(id)
+    ExercisesStore.deleteExercise({ id })
     goBack()
   }
 </script>

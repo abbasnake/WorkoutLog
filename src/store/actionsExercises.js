@@ -1,4 +1,4 @@
-import { generateRandomId, getArrayItemById } from '../utils/helpers'
+import { generateRandomId } from '../utils/helpers'
 import Storage from '../utils/storage'
 
 const actions = () => {
@@ -14,7 +14,7 @@ const actions = () => {
     exercises: []
   })
 
-  const addExercise = (state, name) => {
+  const addExercise = (state, { name }) => {
     const exercises = state.exercises.concat(_exerciseTemplate(name))
 
     Storage.saveExercises(exercises)
@@ -22,7 +22,7 @@ const actions = () => {
     return { ...state, exercises }
   }
 
-  const deleteExercise = (state, id) => {
+  const deleteExercise = (state, { id }) => {
     const exercises = state.exercises.filter(exercise => exercise.id !== id)
 
     Storage.saveExercises(exercises)
@@ -30,7 +30,7 @@ const actions = () => {
     return { ...state, exercises }
   }
 
-  const editExercise = (state, id, newData) => {
+  const editExercise = (state, { id, newData }) => {
     const exercises = state.exercises.map(exercise =>
       exercise.id === id ? { ...exercise, ...newData } : exercise
     )
@@ -46,7 +46,7 @@ const actions = () => {
     return { ...state, exercises }
   }
 
-  const addRoutine = (state, name) => {
+  const addRoutine = (state, { name }) => {
     const routines = state.routines.concat(_routineTemplate(name))
 
     Storage.saveRoutines(routines)
@@ -54,12 +54,19 @@ const actions = () => {
     return { ...state, routines }
   }
 
-  const addExerciseToRoutine = (state, routineId, exerciseId) => {
+  const deleteRoutine = (state, { routineId }) => {
+    const routines = state.routines.filter(routine => routine.id !== routineId)
+
+    Storage.saveRoutines(routines)
+
+    return { ...state, routines }
+  }
+
+  const addExerciseToRoutine = (state, { routineId, exerciseId }) => {
     const routines = state.routines.map(routine => {
       if (routine.id === routineId) {
-        const exercise = getArrayItemById(exerciseId, state.exercises)
         const newExercise = {
-          ...exercise,
+          id: exerciseId,
           index: routine.exercises.length,
           setsReps: [3, 8]
         }
@@ -72,27 +79,22 @@ const actions = () => {
     })
 
     Storage.saveRoutines(routines)
-    console.log('TCL: addExerciseToRoutine -> routines', routines);
 
     return { ...state, routines }
   }
 
   const removeExerciseFromRoutine = (
     state,
-    routineId,
-    exerciseId,
-    exerciseIndex
+    { routineId, exerciseId, exerciseIndex }
   ) => {
     const routines = state.routines.map(routine => {
       if (routine.id === routineId) {
         const exercises = routine.exercises
           .filter(
             exercise =>
-              (exercise.id !== exerciseId && exercise.index !== exerciseIndex)
+              exercise.id !== exerciseId || exercise.index !== exerciseIndex
           )
           .map((exercise, index) => ({ ...exercise, index }))
-
-        console.log('exercises---', exercises, exerciseIndex)
 
         return { ...routine, exercises }
       }
@@ -117,6 +119,7 @@ const actions = () => {
     editExercise,
     loadExercises,
     addRoutine,
+    deleteRoutine,
     addExerciseToRoutine,
     removeExerciseFromRoutine,
     loadRoutines

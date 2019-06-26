@@ -9,25 +9,21 @@ const initialState = {
 const exercisesStore = () => {
   const { subscribe, update } = writable(initialState)
 
-  const addExercise = name => update(state => Actions.addExercise(state, name))
-  const deleteExercise = id =>
-    update(state => Actions.deleteExercise(state, id))
-  const editExercise = (id, newData) =>
-    update(state => Actions.editExercise(state, id, newData))
   const loadExercises = () => update(state => Actions.loadExercises(state))
-  const addRoutine = name => update(state => Actions.addRoutine(state, name))
-  const addExerciseToRoutine = (routineId, exerciseId) =>
-    update(state => Actions.addExerciseToRoutine(state, routineId, exerciseId))
-  const removeExerciseFromRoutine = (routineId, exerciseId, exerciseIndex) =>
-    update(state =>
-      Actions.removeExerciseFromRoutine(
-        state,
-        routineId,
-        exerciseId,
-        exerciseIndex
-      )
-    )
+  const addExercise = data => update(state => Actions.addExercise(state, data))
+  const deleteExercise = data =>
+    update(state => Actions.deleteExercise(state, data))
+  const editExercise = data =>
+    update(state => Actions.editExercise(state, data))
+
   const loadRoutines = () => update(state => Actions.loadRoutines(state))
+  const addRoutine = data => update(state => Actions.addRoutine(state, data))
+  const deleteRoutine = data =>
+    update(state => Actions.deleteRoutine(state, data))
+  const addExerciseToRoutine = data =>
+    update(state => Actions.addExerciseToRoutine(state, data))
+  const removeExerciseFromRoutine = data =>
+    update(state => Actions.removeExerciseFromRoutine(state, data))
 
   return {
     subscribe,
@@ -36,6 +32,7 @@ const exercisesStore = () => {
     editExercise,
     loadExercises,
     addRoutine,
+    deleteRoutine,
     addExerciseToRoutine,
     removeExerciseFromRoutine,
     loadRoutines

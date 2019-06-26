@@ -63,9 +63,27 @@ const Storage = () => {
     return history ? history : []
   }
 
-  const saveExercises = (exercises, key = EXERCISES_KEY) => _set(key, exercises)
-  const saveRoutines = (routines, key = ROUTINES_KEY) => _set(key, routines)
-  const saveHistory = (history, key = HISTORY_KEY) => _set(key, history)
+  const saveExercises = (exercises, key = EXERCISES_KEY) => {
+    _set(key, exercises)
+
+    Logger.table(
+      'utils -> storage -> saveExercises',
+      'Exercises saved',
+      exercises
+    )
+  }
+
+  const saveRoutines = (routines, key = ROUTINES_KEY) => {
+    _set(key, routines)
+
+    Logger.table('utils -> storage -> saveRoutines', 'Routines saved', routines)
+  }
+
+  const saveHistory = (history, key = HISTORY_KEY) => {
+    _set(key, history)
+
+    Logger.table('utils -> storage -> saveHistory', 'History saved', history)
+  }
 
   return Object.freeze({
     loadExercises,
