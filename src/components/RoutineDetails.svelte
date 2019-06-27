@@ -32,17 +32,7 @@
   }
 
   function setupRoutine(store) {
-    const currentRoutine = store.routines.find(item => item.id === routineId)
-
-    const exercises = currentRoutine.exercises.map(exercise => {
-      const exerciseDetails = store.exercises.find(
-        item => item.id === exercise.id
-      )
-
-      return { ...exercise, ...exerciseDetails }
-    })
-
-    return { ...currentRoutine, exercises }
+    return ExercisesStore.getRoutineById(routineId)
   }
 </script>
 
@@ -58,6 +48,7 @@
       </button>
     </div>
   {/each}
+  <br />
   <select on:change={e => (exerciseId = e.target.value)}>
     <option value="" disabled selected>Add exercise</option>
     {#each $ExercisesStore.exercises as exercise (exercise.id)}

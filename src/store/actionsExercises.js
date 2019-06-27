@@ -1,4 +1,4 @@
-import { generateRandomId } from '../utils/helpers'
+import { generateRandomId, getArrayItemById } from '../utils/helpers'
 import Storage from '../utils/storage'
 
 const actions = () => {
@@ -113,6 +113,17 @@ const actions = () => {
     return { ...state, routines }
   }
 
+  const getRoutineById = (state, { id }) => {
+    const routine = getArrayItemById(id, state.routines)
+    const exercises = routine.exercises.map(exercise => {
+      const details = getArrayItemById(exercise.id, state.exercises)
+
+      return { ...exercise, ...details }
+    })
+
+    return { ...routine, exercises }
+  }
+
   return Object.freeze({
     addExercise,
     deleteExercise,
@@ -122,7 +133,8 @@ const actions = () => {
     deleteRoutine,
     addExerciseToRoutine,
     removeExerciseFromRoutine,
-    loadRoutines
+    loadRoutines,
+    getRoutineById
   })
 }
 

@@ -1,13 +1,13 @@
-import { writable } from 'svelte/store'
+import { writable, get, derived } from 'svelte/store'
 import Actions from './actionsExercises'
 
-const initialState = {
-  exercises: [],
-  routines: []
-}
-
 const exercisesStore = () => {
-  const { subscribe, update } = writable(initialState)
+  const initialState = {
+    exercises: [],
+    routines: []
+  }
+  const store = writable(initialState)
+  const { subscribe, update } = store
 
   const loadExercises = () => update(state => Actions.loadExercises(state))
   const addExercise = data => update(state => Actions.addExercise(state, data))
@@ -24,6 +24,7 @@ const exercisesStore = () => {
     update(state => Actions.addExerciseToRoutine(state, data))
   const removeExerciseFromRoutine = data =>
     update(state => Actions.removeExerciseFromRoutine(state, data))
+  const getRoutineById = id => Actions.getRoutineById(get(store), { id })
 
   return {
     subscribe,
@@ -35,7 +36,8 @@ const exercisesStore = () => {
     deleteRoutine,
     addExerciseToRoutine,
     removeExerciseFromRoutine,
-    loadRoutines
+    loadRoutines,
+    getRoutineById
   }
 }
 
