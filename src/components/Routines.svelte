@@ -1,5 +1,5 @@
 <script>
-  import { ExercisesStore, NavigationStore } from '../store'
+  import { WorkoutStore, NavigationStore } from '../store'
   import { ROUTINE_DETAILS_ROUTE } from '../utils/constants'
   import Logger from '../utils/logger.js'
 
@@ -7,7 +7,7 @@
 
   function onClick() {
     if (input.length > 0) {
-      ExercisesStore.addRoutine({ name: input })
+      WorkoutStore.addRoutine({ name: input })
       input = ''
     } else {
       Logger.warn('components -> Routines', 'input cannot be empty')
@@ -47,7 +47,7 @@
 
 <div class="Routines">
   <h1>Routines</h1>
-  {#each $ExercisesStore.routines as routine (routine.id)}
+  {#each $WorkoutStore.routines as routine (routine.id)}
     <div class="Routines-routine">
       <h4> {routine.name} </h4>
       <button

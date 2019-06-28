@@ -1,5 +1,5 @@
-import { generateRandomId, getArrayItemById } from '../utils/helpers'
-import Storage from '../utils/storage'
+import { generateRandomId, getArrayItemById } from '../../utils/helpers'
+import Storage from '../../utils/storage'
 
 const actions = () => {
   const _exerciseTemplate = name => ({

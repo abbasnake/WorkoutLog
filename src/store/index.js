@@ -1,4 +1,4 @@
-import ExercisesStore from './exercises'
+import WorkoutStore from './workout'
 import NavigationStore from './navigation'
 
-export { ExercisesStore, NavigationStore }
+export { WorkoutStore, NavigationStore }

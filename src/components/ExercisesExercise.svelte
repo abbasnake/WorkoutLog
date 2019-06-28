@@ -1,5 +1,5 @@
 <script>
-  import { ExercisesStore, NavigationStore } from '../store'
+  import { NavigationStore } from '../store'
   import { EXERCISE_DETAILS_ROUTE } from '../utils/constants'
 
   export let exercise

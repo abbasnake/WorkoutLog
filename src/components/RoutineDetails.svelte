@@ -1,15 +1,15 @@
 <script>
-  import { NavigationStore, ExercisesStore } from '../store'
+  import { NavigationStore, WorkoutStore } from '../store'
   import { ROUTINES_ROUTE } from '../utils/constants.js'
   import Logger from '../utils/logger'
 
   let exerciseId = ''
   const { data: routineId } = $NavigationStore
-  $: routine = setupRoutine($ExercisesStore)
+  $: routine = setupRoutine($WorkoutStore)
 
   function addExerciseToRoutine() {
     if (exerciseId) {
-      ExercisesStore.addExerciseToRoutine({ routineId, exerciseId })
+      WorkoutStore.addExerciseToRoutine({ routineId, exerciseId })
     } else {
       Logger.warn(
         'components -> RoutineDetails',
@@ -19,7 +19,7 @@
   }
 
   function removeExerciseFromRoutine(exerciseId, exerciseIndex) {
-    ExercisesStore.removeExerciseFromRoutine({
+    WorkoutStore.removeExerciseFromRoutine({
       routineId,
       exerciseId,
       exerciseIndex
@@ -28,11 +28,11 @@
 
   function deleteRoutine() {
     NavigationStore.navigateTo(ROUTINES_ROUTE)
-    ExercisesStore.deleteRoutine({ routineId })
+    WorkoutStore.deleteRoutine({ routineId })
   }
 
   function setupRoutine(store) {
-    return ExercisesStore.getRoutineById(routineId)
+    return WorkoutStore.getRoutineById(routineId)
   }
 </script>
 
@@ -51,7 +51,7 @@
   <br />
   <select on:change={e => (exerciseId = e.target.value)}>
     <option value="" disabled selected>Add exercise</option>
-    {#each $ExercisesStore.exercises as exercise (exercise.id)}
+    {#each $WorkoutStore.exercises as exercise (exercise.id)}
       <option value={exercise.id}>{exercise.name}</option>
     {/each}
   </select>

@@ -1,13 +1,13 @@
 <script>
   import Exercise from './ExercisesExercise.svelte'
-  import { ExercisesStore } from '../store'
+  import { WorkoutStore } from '../store'
   import Logger from '../utils/logger.js'
 
   let input = ''
 
   function onClick() {
     if (input.length > 0) {
-      ExercisesStore.addExercise({ name: input })
+      WorkoutStore.addExercise({ name: input })
       input = ''
     } else {
       Logger.warn('components -> Exercises', 'input cannot be empty')
@@ -33,7 +33,7 @@
 
 <div class="Exercises">
   <h1>exercises</h1>
-  {#each $ExercisesStore.exercises as exercise (exercise.id)}
+  {#each $WorkoutStore.exercises as exercise (exercise.id)}
     <Exercise {exercise} />
   {/each}
   <div class="Exercises-addNew">

@@ -1,7 +1,7 @@
 import { writable, get, derived } from 'svelte/store'
-import Actions from './actionsExercises'
+import Actions from './actions'
 
-const exercisesStore = () => {
+const WorkoutStore = () => {
   const initialState = {
     exercises: [],
     routines: []
@@ -41,4 +41,4 @@ const exercisesStore = () => {
   }
 }
 
-export default exercisesStore()
+export default WorkoutStore()

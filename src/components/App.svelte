@@ -2,12 +2,12 @@
   import Header from './Header.svelte'
   import Main from './Main.svelte'
   import Footer from './Footer.svelte'
-  import { ExercisesStore } from '../store'
+  import { WorkoutStore } from '../store'
   import { onMount } from 'svelte'
 
   onMount(() => {
-    ExercisesStore.loadExercises()
-    ExercisesStore.loadRoutines()
+    WorkoutStore.loadExercises()
+    WorkoutStore.loadRoutines()
   })
 </script>
 

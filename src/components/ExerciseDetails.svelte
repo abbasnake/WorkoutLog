@@ -1,5 +1,5 @@
 <script>
-  import { ExercisesStore, NavigationStore } from '../store'
+  import { WorkoutStore, NavigationStore } from '../store'
   import { EXERCISES_ROUTE } from '../utils/constants'
 
   let {
@@ -9,7 +9,7 @@
 
   function editSaveExercise() {
     if (isEditMode) {
-      ExercisesStore.editExercise({ id, newData: { name, notes } })
+      WorkoutStore.editExercise({ id, newData: { name, notes } })
     }
     isEditMode = !isEditMode
   }
@@ -18,7 +18,7 @@
   }
 
   function deleteExercise() {
-    ExercisesStore.deleteExercise({ id })
+    WorkoutStore.deleteExercise({ id })
     goBack()
   }
 </script>
